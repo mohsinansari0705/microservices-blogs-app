@@ -20,10 +20,11 @@ export default function PostCreate() {
 
     const onSubmit = async () => {
         try {
-            const response = await axios.post('http://localhost:4000/posts', {
-                title, content
-            });
-            console.log('Post created:', response.data);
+            if (title !== '' && content !== '') {
+                const response = await axios.post('http://localhost:4000/posts', {
+                    title, content
+                });
+            }
             
             setTitle('');
             setContent('');
@@ -46,7 +47,7 @@ export default function PostCreate() {
                 alignItems: 'center',
                 marginBottom: space.md
             }}>
-                <Text style={{ color: colors.white, fontSize: font.xl }}>Create Post</Text>
+                <Text style={{ color: colors.white, fontSize: font.lg }}>Create Post</Text>
             </HBox>
 
             <VBox style={{ gap: space.md }}>
