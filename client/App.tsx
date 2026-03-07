@@ -1,8 +1,8 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
-import PostCreate from './components/PostCreate';
+import { space } from './common/utils/Sizes';
 import { colors } from './common/utils/Colors';
-import { space, font } from './common/utils/Sizes';
+import PostCreate from './components/PostCreate';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 
