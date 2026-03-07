@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import {
@@ -17,8 +18,19 @@ export default function PostCreate() {
     const [ title, setTitle ] = useState<string>('')
     const [ content, setContent ] = useState<string>('')
 
-    console.log('title', title)
-    console.log('content', content)
+    const onSubmit = async () => {
+        try {
+            const response = await axios.post('http://localhost:4000/posts', {
+                title, content
+            });
+            console.log('Post created:', response.data);
+            
+            setTitle('');
+            setContent('');
+        } catch (error) {
+            console.error('Error creating post:', error);
+        }
+    };
 
     return (
         <CardView style={{
@@ -75,12 +87,15 @@ export default function PostCreate() {
                 </VBox>
             </VBox>
 
-            <TouchableOpacity style={{
-                paddingVertical: space.sm,
-                borderRadius: space.md,
-                alignItems: 'center',
-                marginTop: space.sm,
-            }}>
+            <TouchableOpacity
+                onPress={onSubmit}
+                style={{
+                    paddingVertical: space.sm,
+                    borderRadius: space.md,
+                    alignItems: 'center',
+                    marginTop: space.sm
+                }}
+            >
                 <View style={{
                     borderRadius: space.sm,
                     borderColor: colors.textMuted,
