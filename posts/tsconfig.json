@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "jsx": "react-jsx",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "module": "nodenext",
+    "target": "esnext",
+    "declaration": true,
+    "outDir": "./dist",
+    "types": [
+      "node"
+    ]
+  },
+  "include": [
+      "index.ts",
+      "config.json",
+      "src/**/**/**/*",
+  ],
+  "exclude": [
+      "node_modules/**/**/*",
+  ]
+}
