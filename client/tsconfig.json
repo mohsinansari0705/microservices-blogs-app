@@ -4,7 +4,7 @@
     "jsx": "react",
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "module": "commonjs",
+    "module": "esnext",
     "target": "esNext",
     "declaration": true,
     "strict": true,
