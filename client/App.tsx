@@ -1,8 +1,9 @@
 import React from 'react';
-import { StatusBar } from 'react-native';
+import { View, StatusBar } from 'react-native';
 import { space } from './common/utils/Sizes';
 import { colors } from './common/utils/Colors';
 import PostCreate from './components/PostCreate';
+import PostList from './components/PostList';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 
@@ -17,6 +18,10 @@ export default function App() {
         paddingVertical: space.lg
       }}>
         <PostCreate />
+
+        <View style={{ borderColor: colors.textMuted, borderWidth: 1, marginVertical: space.lg }} />
+
+        <PostList />
       </SafeAreaView>
     </SafeAreaProvider>
   );
