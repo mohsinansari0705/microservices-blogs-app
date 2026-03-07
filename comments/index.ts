@@ -1,3 +1,4 @@
+import cors from 'cors';
 import express from 'express';
 import bodyParser from 'body-parser';
 import { randomBytes } from 'node:crypto';
@@ -5,6 +6,7 @@ import { randomBytes } from 'node:crypto';
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
 type Comment = {
     id: string;
