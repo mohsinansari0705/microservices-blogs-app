@@ -5,6 +5,7 @@ import {
     VBox,
     HBox
 } from 'react-native-boxes';
+import { CommentCreate } from './CommentCreate';
 import { Text, ScrollView } from 'react-native';
 import { colors } from '../common/utils/Colors';
 import { font, space } from '../common/utils/Sizes';
@@ -32,8 +33,9 @@ export default function PostList() {
 
     const renderPosts = () => (
         <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+                maxHeight: space.xxl * 10,
                 flexDirection: 'column',
                 gap: space.md,
                 paddingBottom: space.lg
@@ -47,24 +49,29 @@ export default function PostList() {
                         backgroundColor: colors.lightBlue,
                         borderRadius: space.sm,
                         paddingHorizontal: space.md,
-                        paddingVertical: space.sm * 1.25
+                        paddingTop: space.md * 1.15,
+                        paddingBottom: space.sm
                     }}
                 >
-                    <Text style={{
-                        color: colors.white,
-                        fontSize: font.md,
-                        fontWeight: '400',
-                        fontFamily: 'verdana',
-                        paddingBottom: space.sm
-                    }}>
-                        {post.title}
-                    </Text>
-                    <Text style={{
-                        color: colors.textMuted,
-                        fontSize: font.md
-                    }}>
-                        {post.content}
-                    </Text>
+                    <VBox>
+                        <Text style={{
+                            color: colors.white,
+                            fontSize: font.md * 1.15,
+                            fontWeight: '400',
+                            paddingBottom: space.sm
+                        }}>
+                            {post.title}
+                        </Text>
+                        <Text style={{
+                            color: colors.textMuted,
+                            fontSize: font.md,
+                            paddingBottom: space.sm / 2
+                        }}>
+                            {post.content}
+                        </Text>
+                    </VBox>
+
+                    <CommentCreate postId={post.id}/>
                 </VBox>
             )}
         </ScrollView>
@@ -83,4 +90,4 @@ export default function PostList() {
             {renderPosts()}
         </CardView>
     );
-};
+}
