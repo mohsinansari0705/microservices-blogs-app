@@ -10,10 +10,6 @@ import { colors } from '../common/utils/Colors';
 import { font, space } from '@/common/utils/Sizes';
 
 
-export type PostCreateProps = {
-    onSubmit: () => void;
-}
-
 export default function PostCreate() {
     const [ title, setTitle ] = useState<string>('')
     const [ content, setContent ] = useState<string>('')
@@ -21,7 +17,7 @@ export default function PostCreate() {
     const onSubmit = async () => {
         try {
             if (title !== '' && content !== '') {
-                const response = await axios.post('http://localhost:4000/posts', {
+                await axios.post('http://localhost:4000/posts', {
                     title, content
                 });
             }
