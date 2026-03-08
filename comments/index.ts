@@ -10,7 +10,7 @@ app.use(cors());
 
 type Comment = {
     id: string;
-    content: string;
+    comment: string;
 };
 const commentsByPostId: Record<string, Comment[]> = {};
 
@@ -20,11 +20,11 @@ app.get('/posts/:id/comments', (req, res) => {
 
 app.post('/posts/:id/comments', (req, res) => {
     const commentId = randomBytes(4).toString('hex');
-    const { content } = req.body;
+    const { comment } = req.body;
 
     const comments = commentsByPostId[req.params.id] || [];
 
-    comments.push({ id: commentId, content });
+    comments.push({ id: commentId, comment: comment });
 
     commentsByPostId[req.params.id] = comments;
 
