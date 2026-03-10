@@ -1,17 +1,21 @@
 import axios from 'axios';
+import { Text, ScrollView } from 'react-native';
 import React, { useState, useEffect } from "react";
 import {
     CardView,
     VBox,
     HBox
 } from 'react-native-boxes';
-import { CommentCreate } from './CommentCreate';
-import { Text, ScrollView } from 'react-native';
 import { colors } from '../common/utils/Colors';
 import { font, space } from '../common/utils/Sizes';
+import { CommentCreate } from './CommentCreate';
 
 
-export default function PostList() {
+type PostListProps = {
+    style?: any;
+};
+
+export default function PostList({ style }: PostListProps) {
     const [posts, setPosts] = useState({});
 
     const fetchPosts = async () => {
@@ -24,70 +28,61 @@ export default function PostList() {
         fetchPosts();
     }, []);
 
-    const renderedPosts = Object.values(posts).map((post: any) => ({
+    const fetchedPosts = Object.values(posts).map((post: any) => ({
         id: post.id,
         title: post.title,
         content: post.content
     }));
 
 
-    const renderPosts = () => (
-        <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-                maxHeight: space.xxl * 10,
-                flexDirection: 'column',
-                gap: space.md,
-                paddingBottom: space.lg
-            }}
-        >
-            {renderedPosts.map((post: { id: string, title: string, content: string }) =>
-                <VBox
-                    key={post.id}
-                    style={{
-                        width: '100%',
-                        backgroundColor: colors.lightBlue,
-                        borderRadius: space.sm,
-                        paddingHorizontal: space.md,
-                        paddingTop: space.md * 1.15,
-                        paddingBottom: space.sm
-                    }}
-                >
-                    <VBox>
-                        <Text style={{
-                            color: colors.white,
-                            fontSize: font.md * 1.15,
-                            fontWeight: '400',
-                            paddingBottom: space.sm
-                        }}>
-                            {post.title}
-                        </Text>
-                        <Text style={{
-                            color: colors.textMuted,
-                            fontSize: font.md,
-                            paddingBottom: space.sm / 2
-                        }}>
-                            {post.content}
-                        </Text>
-                    </VBox>
-
-                    <CommentCreate postId={post.id}/>
-                </VBox>
-            )}
-        </ScrollView>
-    );
-
     return (
         <CardView style={{
+            flex: 1,
             backgroundColor: colors.darkBlue,
             padding: 0,
-            margin: 0
+            marginVertical: space.md,
+            marginHorizontal: 0,
+            ...style
         }}>
-            <HBox style={{ justifyContent: 'flex-start', alignItems: 'center', paddingBottom: space.sm }}>
+            <HBox style={{ justifyContent: 'flex-start', alignItems: 'center', paddingBottom: space.md }}>
                 <Text style={{ color: 'white', fontSize: font.lg, fontWeight: 'bold' }}>Posts</Text>
             </HBox>
 
-            {renderPosts()}
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{ gap: space.lg, paddingBottom: space.md }}
+            >
+                {fetchedPosts.map((post: { id: string, title: string, content: string }) =>
+                    <VBox
+                        key={post.id}
+                        style={{
+                            backgroundColor: colors.lightBlue,
+                            borderRadius: space.sm,
+                            paddingHorizontal: space.md,
+                            paddingTop: space.md * 1.15,
+                            paddingBottom: space.sm
+                        }}
+                    >
+                        <VBox style={{ gap: space.sm, paddingBottom: space.sm / 2 }}>
+                            <Text style={{
+                                color: colors.white,
+                                fontSize: font.md * 1.2,
+                                fontWeight: '400'
+                            }}>
+                                {post.title}
+                            </Text>
+                            <Text style={{
+                                color: colors.textMuted,
+                                fontSize: font.md * 1.05
+                            }}>
+                                {post.content}
+                            </Text>
+                        </VBox>
+    
+                        <CommentCreate postId={post.id}/>
+                    </VBox>
+                )}
+            </ScrollView>
         </CardView>
     );
-}
+};

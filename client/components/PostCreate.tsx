@@ -10,7 +10,11 @@ import { colors } from '../common/utils/Colors';
 import { font, space } from '@/common/utils/Sizes';
 
 
-export default function PostCreate() {
+type PostCreateProps = {
+    style?: any;
+};
+
+export default function PostCreate({ style }: PostCreateProps) {
     const [ title, setTitle ] = useState<string>('')
     const [ content, setContent ] = useState<string>('')
 
@@ -18,7 +22,8 @@ export default function PostCreate() {
         try {
             if (title !== '' && content !== '') {
                 await axios.post('http://localhost:4000/posts', {
-                    title, content
+                    title: title,
+                    content: content
                 });
             }
             
@@ -31,24 +36,28 @@ export default function PostCreate() {
 
     return (
         <CardView style={{
+            flex: 1,
             backgroundColor: colors.lightBlue,
-            paddingHorizontal: space.lg,
-            paddingVertical: space.md * 0.75,
-            borderRadius: space.md,
             borderWidth: 2,
-            borderColor: colors.textMuted + '22'
+            borderRadius: space.md,
+            borderColor: colors.textMuted + '22',
+            paddingHorizontal: space.md,
+            marginVertical: space.lg,
+            paddingTop: space.sm * 1,
+            paddingBottom: 0,
+            margin: 0,
+            ...style
         }}>
             <HBox style={{
                 justifyContent: 'center',
-                alignItems: 'center',
-                marginBottom: space.md
+                alignItems: 'center'
             }}>
-                <Text style={{ color: colors.white, fontSize: font.lg }}>Create Post</Text>
+                <Text style={{ color: 'white', fontSize: font.lg * 0.9, fontWeight: 'bold' }}>Create Post</Text>
             </HBox>
 
-            <VBox style={{ gap: space.md }}>
-                <VBox>
-                    <Text style={{ color: colors.white, fontSize: font.md * 1.15, fontWeight: 'bold', marginBottom: space.sm }}>Title :</Text>
+            <VBox style={{ flex: 1, justifyContent: 'space-evenly' }}>
+                <VBox style={{ gap: space.sm }}>
+                    <Text style={{ color: colors.white, fontSize: font.md * 1.1, fontWeight: 'bold' }}>Title :</Text>
                     <TextInput 
                         placeholder="Enter post title..." 
                         onChangeText={setTitle}
@@ -56,15 +65,15 @@ export default function PostCreate() {
                         placeholderTextColor={colors.textMuted}
                         style={{
                             backgroundColor: colors.darkBlue,
-                            fontSize: font.md * 1.1,
+                            fontSize: font.md,
                             color: colors.white,
-                            padding: space.sm * 1.25,
+                            padding: space.sm * 1.35,
                             borderRadius: space.sm
                         }} 
                     />
                 </VBox>
-                <VBox>
-                    <Text style={{ color: colors.white, fontSize: font.md * 1.15, fontWeight: 'bold', marginBottom: space.sm }}>Content :</Text>
+                <VBox style={{ gap: space.sm }}>
+                    <Text style={{ color: colors.white, fontSize: font.md * 1.1, fontWeight: 'bold' }}>Content :</Text>
                     <TextInput
                         placeholder="Enter post content..." 
                         onChangeText={setContent}
@@ -73,41 +82,39 @@ export default function PostCreate() {
                         multiline={true}
                         style={{
                             backgroundColor: colors.darkBlue,
-                            fontSize: font.md * 1.1,
+                            fontSize: font.md,
                             color: colors.white,
-                            padding: space.sm  * 1.25,
+                            padding: space.sm  * 1.35,
                             borderRadius: space.sm,
                             height: 100,
                             textAlignVertical: 'top'
                         }} 
                     />
                 </VBox>
-            </VBox>
 
-            <TouchableOpacity
-                onPress={onSubmit}
-                style={{
-                    paddingVertical: space.sm,
-                    borderRadius: space.md,
-                    alignItems: 'center',
-                    marginTop: space.sm
-                }}
-            >
-                <View style={{
-                    borderRadius: space.sm,
-                    borderColor: colors.textMuted,
-                    borderWidth: 1,
-                    paddingHorizontal: space.md,
-                    paddingVertical: space.sm,
-                    backgroundColor: colors.mediumBlue
-                }}>
-                    <Text style={{
-                        color: colors.white,
-                        fontSize: font.md,
-                        fontWeight: 'bold'
-                    }}>Submit</Text>
-                </View>
-            </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={onSubmit}
+                    style={{
+                        borderRadius: space.md,
+                        alignItems: 'center'
+                    }}
+                >
+                    <View style={{
+                        borderWidth: 1,
+                        borderRadius: space.sm,
+                        borderColor: colors.textMuted,
+                        paddingHorizontal: space.md,
+                        paddingVertical: space.sm,
+                        backgroundColor: colors.mediumBlue
+                    }}>
+                        <Text style={{
+                            color: colors.white,
+                            fontSize: font.md,
+                            fontWeight: 'bold'
+                        }}>Submit</Text>
+                    </View>
+                </TouchableOpacity>
+            </VBox>
         </CardView>
     );
 };
