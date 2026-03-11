@@ -19,7 +19,7 @@ export default function PostList({ style }: PostListProps) {
     const [posts, setPosts] = useState({});
 
     const fetchPosts = async () => {
-        const res = await axios.get('http://localhost:4000/posts');
+        const res = await axios.get('http://localhost:4002/posts');
 
         setPosts(res.data);
     };
@@ -31,7 +31,8 @@ export default function PostList({ style }: PostListProps) {
     const fetchedPosts = Object.values(posts).map((post: any) => ({
         id: post.id,
         title: post.title,
-        content: post.content
+        content: post.content,
+        comments: post.comments
     }));
 
 
@@ -44,15 +45,16 @@ export default function PostList({ style }: PostListProps) {
             marginHorizontal: 0,
             ...style
         }}>
-            <HBox style={{ justifyContent: 'flex-start', alignItems: 'center', paddingBottom: space.md }}>
-                <Text style={{ color: 'white', fontSize: font.lg, fontWeight: 'bold' }}>Posts</Text>
+            <HBox style={{ gap: space.sm, justifyContent: 'flex-start', alignItems: 'center', paddingBottom: space.md }}>
+                <Text style={{ color: colors.white, fontSize: font.lg, fontWeight: 'bold' }}>Posts</Text>
+                <Text style={{ color: colors.textMuted, fontSize: font.md }}>{fetchedPosts.length} posts</Text>
             </HBox>
 
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ gap: space.lg, paddingBottom: space.md }}
             >
-                {fetchedPosts.map((post: { id: string, title: string, content: string }) =>
+                {fetchedPosts.map((post: { id: string, title: string, content: string, comments: [any] }) =>
                     <VBox
                         key={post.id}
                         style={{
@@ -79,7 +81,7 @@ export default function PostList({ style }: PostListProps) {
                             </Text>
                         </VBox>
     
-                        <CommentCreate postId={post.id}/>
+                        <CommentCreate postId={post.id} comments={post.comments} />
                     </VBox>
                 )}
             </ScrollView>
