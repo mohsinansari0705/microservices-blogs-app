@@ -45,6 +45,19 @@ app.post('/events', (req, res) => {
         });
     }
 
+    if (type === 'CommentUpdated') {
+        const { id, content, postId, status } = data;
+
+        const comment = posts[postId].comments.find(comment => {
+            return comment?.id === id;
+        });
+
+        if (comment) {
+            comment.content = content;
+            comment.status = status;
+        }
+    }
+
     res.send({});
 });
 
