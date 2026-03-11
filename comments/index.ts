@@ -12,6 +12,7 @@ app.use(cors());
 type Comment = {
     id: string;
     content: string;
+    status: string;
 };
 const commentsByPostId: Record<string, Comment[]> = {};
 
@@ -26,7 +27,7 @@ app.post('/posts/:id/comments', async (req, res) => {
 
     const comments = commentsByPostId[req.params.id] || [];
 
-    comments.push({ id: commentId, content: content });
+    comments.push({ id: commentId, content: content, status: 'pending' });
 
     commentsByPostId[req.params.id] = comments;
 
@@ -35,7 +36,8 @@ app.post('/posts/:id/comments', async (req, res) => {
         data: {
             id: commentId,
             content: content,
-            postId: req.params.id
+            postId: req.params.id,
+            status: 'pending'
         }
     });
 
@@ -47,6 +49,7 @@ app.post('/events', (req, res) => {
 
     res.send({});
 });
+
 
 app.listen(4001, () => {
     console.log("Comments service listening on port 4001...");
