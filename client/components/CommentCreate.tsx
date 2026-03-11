@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { View, TextInput, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import {
     CardView,
     VBox,
@@ -13,21 +13,17 @@ import { font, space } from '../common/utils/Sizes';
 
 export type CommentCreateProps = {
     postId: string;
+    comments: [{ id: string, content: string }] | [];
 }
 
-export function CommentCreate({ postId }: CommentCreateProps) {
+export function CommentCreate({ postId, comments }: CommentCreateProps) {
     const [comment, setComment] = useState<string>('');
-    const [commentCount, setCommentCount] = useState<number>(0);
-
-    const handleCommentCount = (count: number) => {
-        setCommentCount(count);
-    };
 
     const onSubmit = async () => {
         try {
             if (comment !== '') {
                 await axios.post(`http://localhost:4001/posts/${postId}/comments`, {
-                    comment
+                    content: comment
                 });
             }
             
@@ -36,6 +32,7 @@ export function CommentCreate({ postId }: CommentCreateProps) {
             console.log("Error creating comment:", error);
         }
     };
+
 
     return (
         <CardView
@@ -47,7 +44,7 @@ export function CommentCreate({ postId }: CommentCreateProps) {
             <VBox>
                 <HBox style={{ marginBottom: space.md, alignItems: 'center', gap: space.sm * 1.5 }}>
                     <Text style={{ color: colors.white, fontSize: font.md * 1.15, fontWeight: 'bold' }}>Comments</Text>
-                    <Text style={{ color: colors.textMuted, fontSize: font.md }}>{commentCount} comments</Text>
+                    <Text style={{ color: colors.textMuted, fontSize: font.md }}>{comments.length} comments</Text>
                 </HBox>
                 <TextInput 
                     placeholder="new comment..." 
@@ -73,9 +70,9 @@ export function CommentCreate({ postId }: CommentCreateProps) {
                     }}
                 >
                     <View style={{
+                        borderWidth: 1,
                         borderRadius: space.sm,
                         borderColor: colors.textMuted,
-                        borderWidth: 1,
                         paddingHorizontal: space.sm * 1.5,
                         paddingVertical: space.sm / 2,
                         backgroundColor: colors.mediumBlue
@@ -88,7 +85,7 @@ export function CommentCreate({ postId }: CommentCreateProps) {
                     </View>
                 </TouchableOpacity>
 
-                <CommentList postId={postId} onCommentCount={handleCommentCount} />
+                <CommentList comments={comments} />
             </VBox>
         </CardView>
     );
