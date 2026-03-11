@@ -1,5 +1,5 @@
-import express from 'express';
 import cors from 'cors';
+import express from 'express';
 import bodyParser from 'body-parser';
 
 
@@ -10,6 +10,7 @@ app.use(cors());
 type Comment = {
     id: string;
     content: string;
+    status: string;
 };
 type Post = {
     id: string;
@@ -39,7 +40,8 @@ app.post('/events', (req, res) => {
     if (type === 'CommentCreated') {
         posts[data.postId].comments.push({
             id: data.id,
-            content: data.content
+            content: data.content,
+            status: data.status
         });
     }
 
