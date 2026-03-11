@@ -8,14 +8,25 @@ import { font, space } from '../common/utils/Sizes';
 
 
 export type CommentListProps = {
-    comments: [{ id: string, content: string }] | [];
+    comments: [{ id: string, content: string, status: string }] | [];
 };
 
 export function CommentList({ comments }: CommentListProps) {
-    const renderedComments = comments.map((comment: any) => ({
-        id: comment.id,
-        content: comment.content
-    }));
+    const validateStatus = (content: string, status: string) => {
+        let updatedContent: string;
+
+        if (status === 'approved') {
+            content = content;
+        }
+        if (status === 'pending') {
+            content = "This comment is awaiting moderation.";
+        }
+        if (status === 'rejected') {
+            content = "This comment has been rejected!";
+        }
+
+        return content
+    }
 
     return (
         <ScrollView
@@ -25,12 +36,12 @@ export function CommentList({ comments }: CommentListProps) {
                 gap: space.sm
             }}
         >
-            {renderedComments.map((comment: { id: string, content: string }) =>
+            {comments.map((comment: { id: string, content: string, status: string }) =>
                 <VBox key={comment.id} style={{ marginTop: space.sm }}>
                     <Text style={{
                         color: colors.white,
                         fontSize: font.md
-                    }}>• {comment.content}</Text>
+                    }}>• {validateStatus(comment.content, comment.status)}</Text>
                 </VBox>
             )}
         </ScrollView>
