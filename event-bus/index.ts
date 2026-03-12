@@ -6,8 +6,24 @@ import bodyParser from 'body-parser';
 const app = express();
 app.use(bodyParser.json());
 
+type Data = {
+    id: string;
+    title?: string;
+    content: string;
+    postId?: string;
+    status?: string;
+}
+type Event = {
+    type: 'string';
+    data: Data;
+}
+const events: Event[] = [];
+
+
 app.post('/events', (req, res) => {
     const event = req.body;
+
+    events.push(event);
 
     // posts service
     axios.post('http://localhost:4000/events', event).catch((err) => {
@@ -30,6 +46,10 @@ app.post('/events', (req, res) => {
     });
 
     res.send({ status: 'OK' });
+});
+
+app.get('/events', (req, res) => {
+    res.send(events);
 });
 
 
