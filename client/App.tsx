@@ -1,6 +1,6 @@
-import React from 'react';
-import { space } from './common/utils/Sizes';
-import { colors } from './common/utils/Colors';
+import React, { useState } from 'react';
+import { space } from './components/utils/Sizes';
+import { colors } from './components/utils/Colors';
 import {
   View,
   StatusBar
@@ -11,22 +11,24 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 
 export default function App() {
+  const [refreshCounter, setRefreshCounter] = useState(0);
+
   return (
     <SafeAreaProvider>
-      <StatusBar barStyle='light-content' backgroundColor={colors.darkBlue} />
+      <StatusBar barStyle='light-content' backgroundColor={colors.background} />
       <SafeAreaView style={{
         flex: 1,
-        backgroundColor: colors.darkBlue,
+        backgroundColor: colors.background,
         paddingHorizontal: space.lg
       }}>
-        <View style={{ flex: 4 }}>
-          <PostCreate />
+        <View>
+          <PostCreate onPostCreated={() => setRefreshCounter(prev => prev + 1)} />
         </View>
 
-        <View style={{ borderColor: colors.textMuted, borderWidth: 1 }} />
+        <View style={{ borderColor: colors.border, borderWidth: 1 }} />
 
-        <View style={{ flex: 6 }}>
-          <PostList />
+        <View style={{ flex: 1 }}>
+          <PostList refreshKey={refreshCounter} />
         </View>
       </SafeAreaView>
     </SafeAreaProvider>
