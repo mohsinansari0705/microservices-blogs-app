@@ -67,6 +67,12 @@ Moderation rule: if the comment text includes the word **"orange"** (case-insens
 - `POST /events` → stores the event in-memory and forwards it to all services
 - `GET /events` → returns all historical events (for Query replay)
 
+## App Interface
+
+<div align='center'>
+    <img src="./client/assets/app-snapshot.png" alt="App Snapshot" width="400" />
+</div>
+
 ## Running locally
 
 ### 1) Install dependencies
