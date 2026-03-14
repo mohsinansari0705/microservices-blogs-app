@@ -2,21 +2,21 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import {
-    CardView,
     VBox,
     HBox,
 } from 'react-native-boxes';
 import { CommentList } from './CommentList';
-import { colors } from '../common/utils/Colors';
-import { font, space } from '../common/utils/Sizes';
+import { colors } from './utils/Colors';
+import { font, space } from './utils/Sizes';
 
 
 export type CommentCreateProps = {
     postId: string;
-    comments: [{ id: string, content: string }] | [];
+    comments: [{ id: string, content: string, status: string }] | [];
+    onCommentAdded?: () => void;
 }
 
-export function CommentCreate({ postId, comments }: CommentCreateProps) {
+export function CommentCreate({ postId, comments, onCommentAdded }: CommentCreateProps) {
     const [comment, setComment] = useState<string>('');
 
     const onSubmit = async () => {
@@ -25,6 +25,12 @@ export function CommentCreate({ postId, comments }: CommentCreateProps) {
                 await axios.post(`http://localhost:4001/posts/${postId}/comments`, {
                     content: comment
                 });
+
+                setTimeout(() => {
+                    if (onCommentAdded) {
+                        onCommentAdded();
+                    }
+                }, 150);
             }
             
             setComment('');
@@ -35,58 +41,54 @@ export function CommentCreate({ postId, comments }: CommentCreateProps) {
 
 
     return (
-        <CardView
-            style={{
-                backgroundColor: colors.darkBlue,
-                marginHorizontal: 0
-            }}
-        >
+        <View style={{ backgroundColor: 'transparent', marginTop: space.md }}>
             <VBox>
-                <HBox style={{ marginBottom: space.md, alignItems: 'center', gap: space.sm * 1.5 }}>
-                    <Text style={{ color: colors.white, fontSize: font.md * 1.15, fontWeight: 'bold' }}>Comments</Text>
-                    <Text style={{ color: colors.textMuted, fontSize: font.md }}>{comments.length} comments</Text>
+                <HBox style={{ marginBottom: space.sm, alignItems: 'center', justifyContent: 'space-between' }}>
+                    <Text style={{ color: colors.text, fontSize: font.md, fontWeight: '600' }}>Comments</Text>
+                    <Text style={{ color: colors.primary, fontSize: font.sm * 1.5, fontWeight: 'bold' }}>{comments.length} REPLIES</Text>
                 </HBox>
-                <TextInput 
-                    placeholder="new comment..." 
-                    onChangeText={setComment}
-                    value={comment}
-                    placeholderTextColor={colors.textMuted}
-                    style={{
-                        backgroundColor: colors.lightBlue,
-                        fontSize: font.md,
-                        color: colors.white,
-                        padding: space.sm * 1.25,
-                        borderRadius: space.sm
-                    }} 
-                />
 
-                <TouchableOpacity
-                    onPress={onSubmit}
-                    style={{
-                        paddingVertical: space.sm,
-                        borderRadius: space.md,
-                        alignItems: 'flex-start',
-                        marginTop: space.sm / 2
-                    }}
-                >
-                    <View style={{
-                        borderWidth: 1,
-                        borderRadius: space.sm,
-                        borderColor: colors.textMuted,
-                        paddingHorizontal: space.sm * 1.5,
-                        paddingVertical: space.sm / 2,
-                        backgroundColor: colors.mediumBlue
-                    }}>
-                        <Text style={{
-                            color: colors.white,
+                <HBox style={{ gap: space.sm, alignItems: 'center', marginBottom: space.sm }}>
+                    <TextInput 
+                        placeholder="Add a comment..." 
+                        onChangeText={setComment}
+                        value={comment}
+                        placeholderTextColor={colors.textMuted}
+                        style={{
+                            flex: 1,
                             fontSize: font.md,
+                            color: colors.text,
+                            backgroundColor: colors.surfaceDark,
+                            borderWidth: 1,
+                            borderRadius: space.xl,
+                            borderColor: colors.border,
+                            paddingVertical: space.sm,
+                            paddingHorizontal: space.md
+                        }} 
+                    />
+
+                    <TouchableOpacity
+                        onPress={onSubmit}
+                        disabled={!comment.trim()}
+                        style={{
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: comment.trim() ? colors.primary : colors.surfaceHighlight,
+                            paddingHorizontal: space.md,
+                            paddingVertical: space.sm,
+                            borderRadius: space.xl,
+                        }}
+                    >
+                        <Text style={{
+                            color: comment.trim() ? colors.white : colors.textMuted,
+                            fontSize: font.sm * 1.5,
                             fontWeight: 'bold'
-                        }}>Comment</Text>
-                    </View>
-                </TouchableOpacity>
+                        }}>Post</Text>
+                    </TouchableOpacity>
+                </HBox>
 
                 <CommentList comments={comments} />
             </VBox>
-        </CardView>
+        </View>
     );
 };
