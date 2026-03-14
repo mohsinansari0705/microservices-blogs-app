@@ -6,15 +6,16 @@ import {
     VBox,
     HBox
 } from 'react-native-boxes';
-import { colors } from '../common/utils/Colors';
-import { font, space } from '@/common/utils/Sizes';
+import { colors } from './utils/Colors';
+import { font, space } from './utils/Sizes';
 
 
 type PostCreateProps = {
     style?: any;
+    onPostCreated?: () => void;
 };
 
-export default function PostCreate({ style }: PostCreateProps) {
+export default function PostCreate({ style, onPostCreated }: PostCreateProps) {
     const [ title, setTitle ] = useState<string>('')
     const [ content, setContent ] = useState<string>('')
 
@@ -25,6 +26,12 @@ export default function PostCreate({ style }: PostCreateProps) {
                     title: title,
                     content: content
                 });
+
+                setTimeout(() => {
+                    if (onPostCreated) {
+                        onPostCreated();
+                    }
+                }, 150);
             }
             
             setTitle('');
@@ -36,58 +43,62 @@ export default function PostCreate({ style }: PostCreateProps) {
 
     return (
         <CardView style={{
-            flex: 1,
-            backgroundColor: colors.lightBlue,
-            borderWidth: 2,
+            backgroundColor: colors.surface,
+            borderWidth: 1,
             borderRadius: space.md,
-            borderColor: colors.textMuted + '22',
-            paddingHorizontal: space.md,
-            marginVertical: space.lg,
-            paddingTop: space.sm * 1,
-            paddingBottom: 0,
+            borderColor: colors.border,
             margin: 0,
+            marginVertical: space.lg,
+            paddingTop: space.md,
+            paddingBottom: space.md,
+            paddingHorizontal: space.md * 1.15,
             ...style
         }}>
             <HBox style={{
-                justifyContent: 'center',
-                alignItems: 'center'
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                marginBottom: space.md
             }}>
-                <Text style={{ color: 'white', fontSize: font.lg * 0.9, fontWeight: 'bold' }}>Create Post</Text>
+                <Text style={{ color: colors.text, fontSize: font.lg, fontWeight: 'bold' }}>Create New Post</Text>
             </HBox>
 
-            <VBox style={{ flex: 1, justifyContent: 'space-evenly' }}>
-                <VBox style={{ gap: space.sm }}>
-                    <Text style={{ color: colors.white, fontSize: font.md * 1.1, fontWeight: 'bold' }}>Title :</Text>
+            <VBox style={{ gap: space.md }}>
+                <VBox style={{ gap: space.sm / 2 }}>
+                    <Text style={{ color: colors.textMuted, fontSize: font.sm * 1.5, fontWeight: '600', textTransform: 'uppercase' }}>Title</Text>
                     <TextInput 
                         placeholder="Enter post title..." 
                         onChangeText={setTitle}
                         value={title}
                         placeholderTextColor={colors.textMuted}
                         style={{
-                            backgroundColor: colors.darkBlue,
                             fontSize: font.md,
-                            color: colors.white,
-                            padding: space.sm * 1.35,
-                            borderRadius: space.sm
+                            color: colors.text,
+                            backgroundColor: colors.surfaceDark,
+                            borderWidth: 1,
+                            borderRadius: space.sm,
+                            borderColor: colors.border,
+                            padding: space.md
                         }} 
                     />
                 </VBox>
-                <VBox style={{ gap: space.sm }}>
-                    <Text style={{ color: colors.white, fontSize: font.md * 1.1, fontWeight: 'bold' }}>Content :</Text>
+                <VBox style={{ gap: space.sm / 2 }}>
+                    <Text style={{ color: colors.textMuted, fontSize: font.sm * 1.5, fontWeight: '600', textTransform: 'uppercase' }}>Content</Text>
                     <TextInput
-                        placeholder="Enter post content..." 
+                        placeholder="What's on your mind?" 
                         onChangeText={setContent}
                         value={content}
                         placeholderTextColor={colors.textMuted} 
                         multiline={true}
                         style={{
-                            backgroundColor: colors.darkBlue,
-                            fontSize: font.md,
-                            color: colors.white,
-                            padding: space.sm  * 1.35,
-                            borderRadius: space.sm,
                             height: 100,
-                            textAlignVertical: 'top'
+                            fontSize: font.md,
+                            color: colors.text,
+                            backgroundColor: colors.surfaceDark,
+                            borderRadius: space.sm,
+                            borderWidth: 1,
+                            borderColor: colors.border,
+                            textAlignVertical: 'top',
+                            padding: space.md
                         }} 
                     />
                 </VBox>
@@ -96,22 +107,23 @@ export default function PostCreate({ style }: PostCreateProps) {
                     onPress={onSubmit}
                     style={{
                         borderRadius: space.md,
-                        alignItems: 'center'
+                        alignItems: 'center',
+                        marginTop: space.sm
                     }}
                 >
                     <View style={{
-                        borderWidth: 1,
+                        width: '100%',
+                        alignItems: 'center',
                         borderRadius: space.sm,
-                        borderColor: colors.textMuted,
-                        paddingHorizontal: space.md,
-                        paddingVertical: space.sm,
-                        backgroundColor: colors.mediumBlue
+                        paddingVertical: space.md,
+                        backgroundColor: colors.primary
                     }}>
                         <Text style={{
                             color: colors.white,
                             fontSize: font.md,
-                            fontWeight: 'bold'
-                        }}>Submit</Text>
+                            fontWeight: 'bold',
+                            letterSpacing: 0.5
+                        }}>Publish Post</Text>
                     </View>
                 </TouchableOpacity>
             </VBox>
